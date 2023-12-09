@@ -10,6 +10,7 @@ impl Player {
     }
 }
 
+
 struct TerminalOutput {
     player: Player,
     opponent: Player,
