@@ -306,5 +306,4 @@ impl TerminalOutput {
         })?;
         Ok(())
     }
-
 }

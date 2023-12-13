@@ -1,14 +1,9 @@
-[package]
-name = "RustyPong"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+resolver="2"
+members = [
+    "pong_server",
+    "pong_game",
+    "pong_lib",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-crossterm = "0.27.0"
-ratatui = "0.24.0"
-futures = "0.3.29"
-tokio = {version="1.35.0", features=["macros", "sync", "rt-multi-thread"]}
-tokio-stream = "0.1.14"
-warp = "0.3.6"

@@ -3,18 +3,6 @@
 version = 3
 
 [[package]]
-name = "RustyPong"
-version = "0.1.0"
-dependencies = [
- "crossterm",
- "futures",
- "ratatui",
- "tokio",
- "tokio-stream",
- "warp",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -687,6 +675,33 @@ name = "pin-utils"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
+
+[[package]]
+name = "pong_game"
+version = "0.1.0"
+dependencies = [
+ "crossterm",
+ "pong_lib",
+ "ratatui",
+]
+
+[[package]]
+name = "pong_lib"
+version = "0.1.0"
+dependencies = [
+ "crossterm",
+ "ratatui",
+]
+
+[[package]]
+name = "pong_server"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "tokio",
+ "tokio-stream",
+ "warp",
+]
 
 [[package]]
 name = "ppv-lite86"
