@@ -691,6 +691,8 @@ version = "0.1.0"
 dependencies = [
  "crossterm",
  "ratatui",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -698,6 +700,8 @@ name = "pong_server"
 version = "0.1.0"
 dependencies = [
  "futures",
+ "pong_lib",
+ "serde_json",
  "tokio",
  "tokio-stream",
  "warp",

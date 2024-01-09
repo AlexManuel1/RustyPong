@@ -6,7 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+pong_lib = { path = "../pong_lib" }
 futures = "0.3.29"
 tokio = {version="1.35.0", features=["macros", "sync", "rt-multi-thread"]}
 tokio-stream = "0.1.14"
 warp = "0.3.6"
+serde_json = "1.0.108"

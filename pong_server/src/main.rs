@@ -1,8 +1,10 @@
-use std::{net::{TcpListener, TcpStream, IpAddr}, str::FromStr};
-use std::io::{prelude::*, BufReader};
+use std::{net::{TcpListener, TcpStream, IpAddr}, str::FromStr, os::unix::fs::PermissionsExt, time::Duration};
+use std::io::{prelude::*, BufReader, Write};
+use std::io;
+use pong_lib::{TerminalOutput};
 
 
-fn main() {
+fn main() -> io::Result<()>{
     let args: Vec<String> = std::env::args().collect();
     
     if args.len() < 2 {
@@ -17,47 +19,21 @@ fn main() {
 
     let tcp_listener = TcpListener::bind(ip_address_and_port).unwrap();
 
-    let player_connections: [TcpStream; 2] = [
-        tcp_listener.accept().unwrap().0,
-        tcp_listener.accept().unwrap().0
-    ];
+    // connect players
+    let mut player_one = tcp_listener.accept().unwrap().0;
+    println!("player 1 tcp stream: {:?}", player_one);
+    let mut player_two = tcp_listener.accept().unwrap().0;
+    println!("player 2 tcp stream: {:?}", player_two);
 
-    //for i in 0..2 {
-        //let player_connection = tcp_listener.accept();
-        //match player_connection {
-            //Ok((socket, ip_address))  => {
-                //println!("Socket ({:?}) at IP: {:?}", socket, ip_address);
-               //player_connections[i] = socket;
-            //},
-            //Err(e) => println!("couldn't connect to client: {:?}", e)
-        //}
-    //}
+    // set streams as non blocking
+    //player_one.set_nonblocking(true).expect("set_nonblocking call failed");
+    //player_two.set_nonblocking(true).expect("set_nonblocking call failed");
 
-    println!("player connections: {:?}", player_connections);
+    // begin game logic and loop sending of data to client
+	let mut user_buffer = String::new();
+    let mut term = TerminalOutput::new(80,40);
 
-    let [player_one, player_two] = player_connections;
-    
-
-    // incoming method on TcpListener returns an iterator and gives us a sequence of streams of type TcpStream.
-    // a single stream represents an open connection. 
-    // a connection is the name for a full req and res exchange AND the server closes the connection. 
-    // We read from the TcpStream to see what the client sent and write our response to the stream to send data back to the client. 
-    // We're actually iterating over connection attempts.
-}
-
-fn handle_clients(mut player1_stream: TcpStream, mut player2_stream: TcpStream) {
-    let player1_buf_reader = BufReader::new(player1_stream);
-    let player2_buf_reader = BufReader::new(player2_stream);
-}
-
-fn handle_connection(mut stream: TcpStream) {
-    let buf_reader = BufReader::new(&mut stream);
-    let http_request: Vec<_> = buf_reader
-        .lines()
-        .map(|result| result.unwrap())
-        .take_while(|line| !line.is_empty())
-        .collect();
-
-    let response = "HTTP/1.1 200 OK\r\n\r\n";
-    stream.write_all(response.as_bytes()).unwrap();
+    println!("Beginning game logic...");
+    term.run_server(&mut player_one, &mut player_two)?;
+    Ok(())
 }
